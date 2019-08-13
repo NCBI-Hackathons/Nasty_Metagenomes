@@ -2,7 +2,7 @@
 Antimicrobial Resistance Characterization in Metagenomes
 
 
-* Review: Nasty Bugs, Bugs_And_Drugs (Based on MagicBlast)
+* Review: [NastyBugs](https://github.com/NCBI-Hackathons/MetagenomicAntibioticResistance), [Bugs_And_Drugs](https://github.com/NCBI-Hackathons/Bugs_And_Drugs) (Based on MagicBlast)
 
 
 ### Goals:
