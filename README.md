@@ -21,7 +21,7 @@ Antimicrobial Resistance Characterization in Metagenomes
 * [ARG-ANNOT](https://omictools.com/arg-annot-tool)
 
 ### Alignment Tools
-* [MegaBlast](https://ncbi.github.io/magicblast/)
+* [MagicBlast](https://ncbi.github.io/magicblast/)
 * [HHM-er](https://github.com/EddyRivasLab/hmmer)
 
 ## Workflow Diagram
