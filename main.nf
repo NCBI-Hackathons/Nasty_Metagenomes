@@ -47,7 +47,6 @@ if (!params.accessions && !params.fastq){ exit 1, "'accessions' or 'fastq' param
 if (params.accessions){
     IN_accessions_raw = Channel.fromPath(params.accessions).ifEmpty { exit 1, "No accessions file provided with path:'${params.accessions}'" }
 
-
     process fasterqDump {
 
     tag { accession_id }
@@ -58,7 +57,7 @@ if (params.accessions){
     val accession_id from IN_accessions_raw.splitText(){ it.trim() }.filter{ it.trim() != "" }
 
     output:
-    set val({ "$name" != "null" ? "$name" : "$accession_id" }), file("${accession_id}/*fq.gz") optional true into reads_download_out_1_0
+    set val({ "$name" != "null" ? "$name" : "$accession_id" }), file("${accession_id}/*fq.gz") optional true into IN_fastq_raw
 
     script:
     """
@@ -78,7 +77,7 @@ if (params.accessions){
             else
                 echo "FastQ files weren't compressed. Check if FastQ files were downloaded."
             fi
-        else
+        elsenex
             echo "FastQ files won't be compressed because compress_fastq options was set to: '${params.compress_fastq}.'"
         fi
     } || {
@@ -94,4 +93,27 @@ if (params.accessions){
     """
 
     }
+} else {
+
+   if (!params.fastq){ exit 1, "'fastq' parameter missing"}
+   IN_fastq_raw = Channel.fromFilePairs(params.fastq).ifEmpty { exit 1, "No fastq files provided with pattern:'${params.fastq}'" }
+
+}
+
+
+process fastp {
+
+    tag {sample_id}
+
+    input:
+    set sample_id, file(fastq_pair) from IN_fastq_raw
+
+    output:
+    set sample_id, file(fastq_pair) into OUT_fastq_QC
+
+    script:
+    """
+    fastp -i ${fastq_pair[0]} -I ${fastq_pair[1]} -o ${sample_id}_QC_1.fq.gz -O ${sample_id}_QC_2.fq.gz -h ${sample_id}.html
+    """
+
 }
