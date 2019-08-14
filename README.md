@@ -57,8 +57,7 @@ Antimicrobial Resistance Characterization in Metagenomes
     ## Merged Plasmid, Assembly from Type, Reference
       
     #**command line**
-    makeblastdb -in .fna -dbtype nucl -parse_seqids -out 
-    makeblastdb -in all_plasmid_genomic.fna -dbtype nucl -parse_seqids -out plasmid_db
+    /opt/ncbi-blast-2.9.0+/bin/makeblastdb -in /data/DBs/Bacteria_type_rep_plasmid_cat.fa -parse_seqids -input_type fasta -dbtype nucl -out Bacteria_type_rep_plasmid_refseq.blastdb 
 
       
 ### Step 2.
@@ -75,7 +74,7 @@ Antimicrobial Resistance Characterization in Metagenomes
     # Run Cov_dep_cal.pl for coverage depth and average sequence coverage
       
     #**command line**
-
+    /opt/magicblast/ncbi-magicblast-1.4.0/bin/magicblast -sra ERR1600439 -db /data/AMR_CDS.blastdb -outfmt sam -out ERR1600439_v_AMR_CDS_magicblast_sam.out -num_threads 8 -paired -no_unaligned
       
     # HHM-er
     # Use AMR finder database as a reference
@@ -95,6 +94,7 @@ Antimicrobial Resistance Characterization in Metagenomes
     # Cross reference list to AMR genes
     
     #**command line**
+    /opt/ncbi-blast-2.9.0+/bin/blastn -query /data/ERR1600439/magicblast_output/ERR1600439.ga.fa -task blastn -db /data/DBs/Bacteria_type_rep_plasmid_refseq.blastdb -outfmt 6 -evalue 1e-6 -out /data/ERR1600439/magicblast_output/ERR1600439.ga.fa_vs_Bacteria_RefSeq_blastn.out
     
     # Plasmid Identification
     # input file to determine which AMR's are on plasmid's
