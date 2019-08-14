@@ -32,7 +32,7 @@ Antimicrobial Resistance Characterization in Metagenomes
 * Input: SRA ID
 * Output files: AMR hits file, AMR by species, AMR's on plasmids
 
-1. Create Blast Database
+1. Create Blast Databases
 2. Use SamTools
 3. Input SRA/FASTQ to MagicBlast or HHM-er
 4. SKESA guided assembly
@@ -40,11 +40,26 @@ Antimicrobial Resistance Characterization in Metagenomes
 
 ### Step 1.
 # ------------------
-    # Create Blast Database
-    # 
-      
+    # Download Plasmid Database
+    
+    # Download AMR Finder Database
+    
+    # Download [bacterial chromosome Databases] (https://www.ncbi.nlm.nih.gov/assembly)
+    ## Search assemblies all[sb]
+    ## Download Assembly: Bacteria, Latest RefSeq, Assembly from Type
+    ## Download Assembly: Bacteria, Latest RefSeq, Reference
+    
+    # Merge Plasmid, Assembly from Type, Reference Databses
+    
+    
+    # Create Blast Databases
+    ## AMR blast db
+    ## Merged Plasmid, Assembly from Type, Reference
       
     #**command line**
+    makeblastdb -in .fna -dbtype nucl -parse_seqids -out 
+    makeblastdb -in all_plasmid_genomic.fna -dbtype nucl -parse_seqids -out plasmid_db
+
       
 ### Step 2.
 # ------------------  
