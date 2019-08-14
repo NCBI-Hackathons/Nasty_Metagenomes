@@ -19,9 +19,9 @@ Antimicrobial Resistance Characterization in Metagenomes
 * [Docker](https://www.docker.com/)
 
 ### AMR Databases
-* [CARD](https://card.mcmaster.ca/)
-* [Resfinder](https://cge.cbs.dtu.dk/services/ResFinder/)
-* [ARG-ANNOT](https://omictools.com/arg-annot-tool)
+* AMR Finder , which includes:
+ * [CARD](https://card.mcmaster.ca/)
+ * [Resfinder](https://cge.cbs.dtu.dk/services/ResFinder/)
 
 ## Workflow Diagram
 ![workflow](https://github.com/NCBI-Hackathons/Nasty_Metagenomes/blob/master/images/Workflow.JPG)
@@ -30,16 +30,16 @@ Antimicrobial Resistance Characterization in Metagenomes
 * Input: SRA ID
 * Output files: AMR hits file, AMR by species, AMR's on plasmids
 
-* STEP 1: Input SRA ID to:
-  * MagicBlast
-   * use AMR database as reference
-   * Sort .sam file
-   * Create depth of coverage file
-   * Run Cov_dep_cal.pl for coverage depth and average sequence coverage
-  * HHM-er
-* STEP 2: Take output "hits" file, and 
-  * Species Identification
-   * Input file to blast against RefSeq database to create species ID list
-   * Cross reference list to AMR genes
-  * Plasmid Identification
+1. STEP 1: Input SRA ID to:
+   * MagicBlast
+    * use AMR finder database as reference
+    * use SamTools to sort and create depth summary file
+    * run Cov_dep_cal.pl for coverage depth and average sequence coverage
+   * HHM-er
+    * use AMR finder database as a reference
+2. STEP 2: Take output "hits" file, and 
+   * Species Identification
+    * Input file to blast against RefSeq database to create species ID list
+    * Cross reference list to AMR genes
+   * Plasmid Identification
    * input file to determine which AMR's are on plasmid's
