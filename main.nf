@@ -104,12 +104,13 @@ if (params.accessions){
 process fastp {
 
     tag {sample_id}
+    publishDir "results/fastp/", pattern: "*.html"
 
     input:
     set sample_id, file(fastq_pair) from IN_fastq_raw
 
     output:
-    set sample_id, file(fastq_pair) into OUT_fastq_QC
+    set sample_id, file('*_QC*')  into OUT_fastq_QC
 
     script:
     """
@@ -117,3 +118,66 @@ process fastp {
     """
 
 }
+
+if (params.mode == "magicblast") {
+
+    IN_blastDB = Channel.fromPath("${params.blastdb}*")
+
+    process magicBLAST {
+
+    tag {sample_id}
+
+    input:
+    set sample_id, file(fastq_pair) from OUT_fastq_QC
+    file blastdb from IN_blastDB.collect()
+
+    output:
+    set sample_id, file('*_out.sam') into OUT_magicblast
+
+    script:
+    """
+    echo \$(echo ${blastdb[0]} | sed -r 's/^(.*)\\.[a-z]+\$/\\1/') > blastdb_name.txt
+    magicblast -query ${fastq_pair[0]} -query_mate ${fastq_pair[1]} -infmt fastq -db \$(cat blastdb_name.txt) -outfmt sam -out ${sample_id}_out.sam -num_threads ${task.cpus} -paired -no_unaligned
+    """
+    }
+
+    process samtools {
+
+    tag {sample_id}
+
+
+    input:
+    set sample_id, file(samfile) from OUT_magicblast
+
+    output:
+    set sample_id, file('*.depth') into OUT_samtools
+
+    script:
+    """
+    samtools sort -o sorted.bam -O bam -@ ${task.cpus} ${samfile} && rm *.sam  >> .command.log 2>&1
+    samtools depth sorted.bam > ${sample_id}.depth
+    """
+
+    }
+
+    IN_reference = Channel.fromPath("${params.reference}")
+
+    process check_coverage {
+
+    tag {sample_id}
+
+    input:
+    set sample_id, file(depth_file) from OUT_samtools
+    each file(amr_reference) from IN_reference
+
+    output:
+
+    script:
+    template "Cov_dep_cal.pl"
+    }
+
+} else if (params.mode == "mash") {
+
+} else if (params.mode == "hmmer") {
+
+} else {exit 1, "no recognized mode provided. available ptions: 'magiblast', 'mash', 'hmmer'"}
