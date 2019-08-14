@@ -30,16 +30,16 @@ Antimicrobial Resistance Characterization in Metagenomes
 * Input: SRA ID
 * Output files: AMR hits file, AMR by species, AMR's on plasmids
 
-1) Input SRA ID to:
+* STEP 1: Input SRA ID to:
   * MagicBlast
-    * use AMR database as reference
-    * Sort .sam file
-    * Create depth of coverage file
-    * Run Cov_dep_cal.pl for coverage depth and average sequence coverage
+   * use AMR database as reference
+   * Sort .sam file
+   * Create depth of coverage file
+   * Run Cov_dep_cal.pl for coverage depth and average sequence coverage
   * HHM-er
-2) Take output "hits" file, and 
+* STEP 2: Take output "hits" file, and 
   * Species Identification
-    * Input file to blast against RefSeq database to create species ID list
-    * Cross reference list to AMR genes
+   * Input file to blast against RefSeq database to create species ID list
+   * Cross reference list to AMR genes
   * Plasmid Identification
-    * input file to determine which AMR's are on plasmid's
+   * input file to determine which AMR's are on plasmid's
