@@ -32,7 +32,7 @@ Antimicrobial Resistance Characterization in Metagenomes
 * Input: SRA ID
 * Output files: AMR hits file, AMR by species, AMR's on plasmids
 
-1. Create Blast Databases
+1. [Create Blast Databases](#Step-1)
 2. Use SamTools
 3. Input SRA/FASTQ to MagicBlast or HHM-er
 4. SKESA guided assembly
