@@ -32,7 +32,7 @@ Antimicrobial Resistance Characterization in Metagenomes
 * Input: SRA ID
 * Output files: AMR hits file, AMR by species, AMR's on plasmids
 
-1. Create Blast Database
+1. Create Blast Databases
 2. Use SamTools
 3. Input SRA/FASTQ to MagicBlast or HHM-er
 4. SKESA guided assembly
@@ -40,11 +40,25 @@ Antimicrobial Resistance Characterization in Metagenomes
 
 ### Step 1.
 # ------------------
-    # Create Blast Database
-    # 
-      
+    # Download Plasmid Database
+    
+    # Download AMR Finder Database
+    
+    # Download [bacterial chromosome Databases] (https://www.ncbi.nlm.nih.gov/assembly)
+    ## Search assemblies all[sb]
+    ## Download Assembly: Bacteria, Latest RefSeq, Assembly from Type
+    ## Download Assembly: Bacteria, Latest RefSeq, Reference
+    
+    # Merge Plasmid, Assembly from Type, Reference Databses
+    
+    
+    # Create Blast Databases
+    ## AMR blast db
+    ## Merged Plasmid, Assembly from Type, Reference
       
     #**command line**
+    /opt/ncbi-blast-2.9.0+/bin/makeblastdb -in /data/DBs/Bacteria_type_rep_plasmid_cat.fa -parse_seqids -input_type fasta -dbtype nucl -out Bacteria_type_rep_plasmid_refseq.blastdb 
+
       
 ### Step 2.
 # ------------------  
@@ -60,7 +74,7 @@ Antimicrobial Resistance Characterization in Metagenomes
     # Run Cov_dep_cal.pl for coverage depth and average sequence coverage
       
     #**command line**
-
+    /opt/magicblast/ncbi-magicblast-1.4.0/bin/magicblast -sra ERR1600439 -db /data/AMR_CDS.blastdb -outfmt sam -out ERR1600439_v_AMR_CDS_magicblast_sam.out -num_threads 8 -paired -no_unaligned
       
     # HHM-er
     # Use AMR finder database as a reference
@@ -75,13 +89,9 @@ Antimicrobial Resistance Characterization in Metagenomes
 
 ### Step 5.
 # ------------------
-    # Species Identification
-    # Input file to blast against RefSeq database to create species ID list
-    # Cross reference list to AMR genes
+    # Species and Plasmid Identification
+    # Blast AMR hits lists against combined database
+    # Parse for Species level and Plasmid identification
     
     #**command line**
-    
-    # Plasmid Identification
-    # input file to determine which AMR's are on plasmid's
-    
-    #**command line**
+    /opt/ncbi-blast-2.9.0+/bin/blastn -query /data/ERR1600439/magicblast_output/ERR1600439.ga.fa -task blastn -db /data/DBs/Bacteria_type_rep_plasmid_refseq.blastdb -outfmt 6 -evalue 1e-6 -out /data/ERR1600439/magicblast_output/ERR1600439.ga.fa_vs_Bacteria_RefSeq_blastn.out
