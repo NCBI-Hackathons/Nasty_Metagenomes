@@ -40,16 +40,20 @@ Antimicrobial Resistance Characterization in Metagenomes
 
 ### Step 1.
 # ------------------
-    # Download Plasmid Database
+    # Download [RefSeq Plasmid Database](https://www.ncbi.nlm.nih.gov/refseq/)
+    ## Use [FTP](ftp://ftp.ncbi.nlm.nih.gov/refseq/release/plasmid/) to download plasmid database, and concatinate into one file
     
-    # Download AMR Finder Database
+    # Download [AMR Finder Database](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA313047)
+    ## Use webserver to download database [AMR_CDS](ftp://ftp.ncbi.nlm.nih.gov/pathogen/Antimicrobial_resistance/AMRFinder/data/2019-04-29.1/)
     
-    # Download [bacterial chromosome Databases] (https://www.ncbi.nlm.nih.gov/assembly)
+    # Download [bacterial chromosome Databases](https://www.ncbi.nlm.nih.gov/assembly)
     ## Search assemblies all[sb]
     ## Download Assembly: Bacteria, Latest RefSeq, Assembly from Type
     ## Download Assembly: Bacteria, Latest RefSeq, Reference
     
     # Merge Plasmid, Assembly from Type, Reference Databses
+    ## 
+    ## Create non-redudant list of accession numbers
     
     
     # Create Blast Databases
