@@ -4,7 +4,7 @@ class Help {
 
         println ""
         println "============================================================"
-        println "                    NastyMetagenomes"
+        println "                  Nasty Metagenomes!"
         println "============================================================"
         println ""
         println ""
@@ -47,7 +47,7 @@ class Help {
 
         println ""
         println "============================================================"
-        println "                      NastyMetagenomes"
+        println "                      Nasty Metagenomes!"
         println "============================================================"
         println ""
         println ""
@@ -61,7 +61,7 @@ class Help {
 
     }
 
-}xxxxx
+}
 
 class CollectInitialMetadata {
 
