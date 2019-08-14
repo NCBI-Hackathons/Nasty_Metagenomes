@@ -89,14 +89,9 @@ Antimicrobial Resistance Characterization in Metagenomes
 
 ### Step 5.
 # ------------------
-    # Species Identification
-    # Input file to blast against RefSeq database to create species ID list
-    # Cross reference list to AMR genes
+    # Species and Plasmid Identification
+    # Blast AMR hits lists against combined database
+    # Parse for Species level and Plasmid identification
     
     #**command line**
     /opt/ncbi-blast-2.9.0+/bin/blastn -query /data/ERR1600439/magicblast_output/ERR1600439.ga.fa -task blastn -db /data/DBs/Bacteria_type_rep_plasmid_refseq.blastdb -outfmt 6 -evalue 1e-6 -out /data/ERR1600439/magicblast_output/ERR1600439.ga.fa_vs_Bacteria_RefSeq_blastn.out
-    
-    # Plasmid Identification
-    # input file to determine which AMR's are on plasmid's
-    
-    #**command line**
