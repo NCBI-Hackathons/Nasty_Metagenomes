@@ -10,7 +10,7 @@ Antimicrobial Resistance Characterization in Metagenomes
 * Generate a "hits" file with aligned reads to each of the publically available AMR databases
 * Determine contextual information about AMR genes by 1) BLAST against RefSeq database to determine species level information 2) determine whether the AMR's are on a plasmid
 
-### Tools
+### Dependencies & Tools
 * [MagicBlast](https://ncbi.github.io/magicblast/)
 * [HHM-er](https://github.com/EddyRivasLab/hmmer)
 * [SamTools](https://github.com/samtools)
@@ -33,10 +33,10 @@ Antimicrobial Resistance Characterization in Metagenomes
 * Output files: AMR hits file, AMR by species, AMR's on plasmids
 
 1. [Create Blast Databases](#Step-1)
-2. Use SamTools
-3. Input SRA/FASTQ to MagicBlast or HHM-er
-4. SKESA guided assembly
-5. Species identification, plasmid identification
+2. [Use SamTools](#Step-2)
+3. [Input SRA/FASTQ to MagicBlast or HHM-er](#Step-3)
+4. [SKESA guided assembly](#Step-4)
+5. [Species identification, plasmid identification](#Step-5)
 
 ### Step 1.
 # ------------------
