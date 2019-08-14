@@ -10,7 +10,7 @@ Antimicrobial Resistance Characterization in Metagenomes
 * Generate a "hits" file with aligned reads to each of the publically available AMR databases
 * Determine contextual information about AMR genes by 1) BLAST against RefSeq database to determine species level information 2) determine whether the AMR's are on a plasmid
 
-### Tools
+### Dependencies & Tools
 * [MagicBlast](https://ncbi.github.io/magicblast/)
 * [HHM-er](https://github.com/EddyRivasLab/hmmer)
 * [SamTools](https://github.com/samtools)
@@ -32,24 +32,28 @@ Antimicrobial Resistance Characterization in Metagenomes
 * Input: SRA ID
 * Output files: AMR hits file, AMR by species, AMR's on plasmids
 
-1. Create Blast Databases
-2. Use SamTools
-3. Input SRA/FASTQ to MagicBlast or HHM-er
-4. SKESA guided assembly
-5. Species identification, plasmid identification
+1. [Create Blast Databases](#Step-1)
+2. [Use SamTools](#Step-2)
+3. [Input SRA/FASTQ to MagicBlast or HHM-er](#Step-3)
+4. [SKESA guided assembly](#Step-4)
+5. [Species identification, plasmid identification](#Step-5)
 
 ### Step 1.
 # ------------------
-    # Download Plasmid Database
+    # Download [RefSeq Plasmid Database](https://www.ncbi.nlm.nih.gov/refseq/)
+    ## Use [FTP](ftp://ftp.ncbi.nlm.nih.gov/refseq/release/plasmid/) to download plasmid database, and concatinate into one file
     
-    # Download AMR Finder Database
+    # Download [AMR Finder Database](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA313047)
+    ## Use webserver to download database [AMR_CDS](ftp://ftp.ncbi.nlm.nih.gov/pathogen/Antimicrobial_resistance/AMRFinder/data/2019-04-29.1/)
     
-    # Download [bacterial chromosome Databases] (https://www.ncbi.nlm.nih.gov/assembly)
+    # Download [bacterial chromosome Databases](https://www.ncbi.nlm.nih.gov/assembly)
     ## Search assemblies all[sb]
     ## Download Assembly: Bacteria, Latest RefSeq, Assembly from Type
     ## Download Assembly: Bacteria, Latest RefSeq, Reference
     
     # Merge Plasmid, Assembly from Type, Reference Databses
+    ## 
+    ## Create non-redudant list of accession numbers
     
     
     # Create Blast Databases
