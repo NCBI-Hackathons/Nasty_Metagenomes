@@ -68,7 +68,7 @@ Antimicrobial Resistance Characterization in Metagenomes
     ## mash sketch -i -p 12 Bacteria_rep.fna
     ## mash sketch -i -p 12 Bacteria_typ.fna
     
-    #(Back to [Workflow](#Workflow-Steps))
+#### (Back to [Workflow](#Workflow-Steps))
       
 ### Step 2.
 # ------------------(Back to [Workflow](#Workflow-Steps))  
