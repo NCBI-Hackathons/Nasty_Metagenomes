@@ -39,7 +39,7 @@ Antimicrobial Resistance Characterization in Metagenomes
 2. [Use SamTools](#Step-2)
 3. [Input SRA/FASTQ to MagicBlast or HHM-er](#Step-3)
 4. [SKESA guided assembly](#Step-4)
-5. [Species identification, plasmid identification](#Step-5)
+5. [Species identification, plasmid identification](#Step-5A) & [Alignment and Statistics](#Step-5B) 
 
 ### Step 1. 
 # ------------------ 
@@ -129,7 +129,7 @@ Antimicrobial Resistance Characterization in Metagenomes
 #### (Back to [Workflow](#Workflow-Steps))
 
 
-### Step 5.
+### Step 5A.
 # ------------------
     # Species and Plasmid Identification
     # Blast AMR hits lists against combined database
@@ -140,7 +140,7 @@ Antimicrobial Resistance Characterization in Metagenomes
 #### (Back to [Workflow](#Workflow-Steps))
 
 
-### Step 6.
+### Step 5B.
 # ------------------
     # Alignment and stats
     
@@ -148,6 +148,7 @@ Antimicrobial Resistance Characterization in Metagenomes
     # makeblastdb -parse_seqids -in ERR1600439.ga.fa -input_type fasta -dbtype nucl -out ERR1600439.ga.blastdb
     # align reads onto the contigs
     # magicblast -db ERR1600439.ga.blastdb -query ERR1600439*.fastq | samtools view -Sb - | samtools sort - > ERR1600439_amr_contigs.bam
+#### (Back to [Workflow](#Workflow-Steps))
 
 ## Authors
 * Xin Huang
