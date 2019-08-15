@@ -6,19 +6,20 @@ Antimicrobial Resistance Characterization in Metagenomes
 * [Bugs_And_Drugs](https://github.com/NCBI-Hackathons/Bugs_And_Drugs) (Based on MagicBlast)
 
 ### Goals:
-* Compare alignment of FASTQ files from SRA Id's to MagicBlast and HMM-er using reference AMR databased (CARD, Resfinder, and ARG-ANNOT)
+* Compare alignment of FASTQ files 1) MagicBlast 2) HMM-er and 3) MASH using reference AMR Finder database
 * Generate a "hits" file with aligned reads to each of the publically available AMR databases
-* Determine contextual information about AMR genes by 1) BLAST against RefSeq database to determine species level information 2) determine whether the AMR's are on a plasmid
+* Determine species and plasmid contextual information about AMR genes by creating a merged chromosome and plasmid database and BLAST-ting "hits" 
 
 ### Dependencies & Tools
 * [MagicBlast](https://ncbi.github.io/magicblast/)
 * [HHM-er](https://github.com/EddyRivasLab/hmmer)
+* [MASH](https://github.com/marbl/Mash)
 * [SamTools](https://github.com/samtools)
 * [Skesa](https://github.com/ncbi/SKESA)
 * [Nextflow](https://www.nextflow.io/)
 * [Docker](https://www.docker.com/)
 
-### AMR Databases
+### AMR Database
 * [AMR Finder](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA313047), which includes:
   * [CARD](https://card.mcmaster.ca/)
   * [Resfinder](https://cge.cbs.dtu.dk/services/ResFinder/)
@@ -86,6 +87,12 @@ Antimicrobial Resistance Characterization in Metagenomes
     # Create hit lits of representative AMR genes
       
     #**command line**
+    
+    # MASH
+    # 
+    
+    #**command line**
+
 
 ### Step 4.
 # ------------------
