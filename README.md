@@ -114,8 +114,14 @@ Antimicrobial Resistance Characterization in Metagenomes
 ### Step 4.
 # ------------------
     # SKESA Guided Assembly
+    # Guided assembly allows to assemble contigs based on some known sequences used as baits. The assembler stacks kmers and extends the ends of each guide sequence optionally output a list of variants assembled. 
+    # In our analysis we use AMR fasta sequences selected in previous steps as guides for assembly. The resutls are presented as contigs fasta file. 
 
     #**command line**
+    # to assemble contigs with AMR_CDS_by_ERR1600439_ref.fasta as guides:
+    # guidedassembler --cores 8 --sra_run ERR1600439 --targets /data/ERR1600439/magicblast_output/AMR_CDS_by_ERR1600439_ref.fasta --contigs_out ERR1600439.ga.fa --fraction 0.1
+    # to assemble contigs and print out all variants of contigs:
+    # guidedassembler_graph --targets ../../AMR_CDS_norm.fasta --consensus ERR1600439.amr.contigs.fa --all_variants ERR1600439.amr.all-contigs.fa --gfa /dev/null --sra_run ERR1600439
 
 ### Step 5.
 # ------------------
