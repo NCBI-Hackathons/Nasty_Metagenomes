@@ -39,7 +39,7 @@ Antimicrobial Resistance Characterization in Metagenomes
 2. [Use SamTools](#Step-2)
 3. [Input SRA/FASTQ to MagicBlast or HHM-er](#Step-3)
 4. [SKESA guided assembly](#Step-4)
-5. [Species identification, plasmid identification](#Step-5)
+5. [Species identification, plasmid identification](#Step-5A) & [Alignment and Statistics](#Step-5B) 
 
 ### Step 1. 
 # ------------------ 
@@ -62,7 +62,7 @@ Antimicrobial Resistance Characterization in Metagenomes
     ## Merged Plasmid, Assembly from Type, Reference
       
     #**command line**
-    /opt/ncbi-blast-2.9.0+/bin/makeblastdb -in /data/DBs/Bacteria_type_rep_plasmid_cat.fa -parse_seqids -input_type fasta -dbtype nucl -out Bacteria_type_rep_plasmid_refseq.blastdb 
+    /opt/ncbi-blast-2.9.0+/bin/makeblastdb -in /data/DBs/Bacteria_type_rep_plasmid_cat_nr.fa -parse_seqids -input_type fasta -dbtype nucl -out /data/DBs/Bacteria_type_rep_plasmid_refseq_nr.blastdb -max_file_sz 4GB 
     # Create Mash sketches:
     ## mash sketch -i AMR.fa
     ## mash sketch -i -p 12 Bacteria_rep.fna
@@ -129,14 +129,26 @@ Antimicrobial Resistance Characterization in Metagenomes
 #### (Back to [Workflow](#Workflow-Steps))
 
 
-### Step 5.
+### Step 5A.
 # ------------------
     # Species and Plasmid Identification
     # Blast AMR hits lists against combined database
     # Parse for Species level and Plasmid identification
     
     #**command line**
-    /opt/ncbi-blast-2.9.0+/bin/blastn -query /data/ERR1600439/magicblast_output/ERR1600439.ga.fa -task blastn -db /data/DBs/Bacteria_type_rep_plasmid_refseq.blastdb -outfmt 6 -evalue 1e-6 -out /data/ERR1600439/magicblast_output/ERR1600439.ga.fa_vs_Bacteria_RefSeq_blastn.out
+    sudo /opt/ncbi-blast-2.9.0+/bin/blastn -query /data/ERR1600439/magicblast_output/ERR1600439.ga.fa -task blastn -db /data/DBs/Bacteria_type_rep_plasmid_refseq_nr.blastdb -outfmt 6 -evalue 1e-6 -out /data/ERR1600439/magicblast_output/ERR1600439.ga.fa_vs_Bacteria_RefSeq_nr_blastn.out -max_target_seqs 10 -num_threads 8
+#### (Back to [Workflow](#Workflow-Steps))
+
+
+### Step 5B.
+# ------------------
+    # Alignment and stats
+    ## build blast db for contigs
+    ## align reads onto the contigs
+    
+    #**command line**
+    # makeblastdb -parse_seqids -in ERR1600439.ga.fa -input_type fasta -dbtype nucl -out ERR1600439.ga.blastdb
+    # magicblast -db ERR1600439.ga.blastdb -query ERR1600439*.fastq  -infmt fastq | samtools view -Sb -F 4 - | samtools sort - > ERR1600439_amr_contigs.bam
 #### (Back to [Workflow](#Workflow-Steps))
 
 
