@@ -57,7 +57,7 @@ if (params.accessions){
     val accession_id from IN_accessions_raw.splitText(){ it.trim() }.filter{ it.trim() != "" }
 
     output:
-    set val({ "$name" != "null" ? "$name" : "$accession_id" }), file("${accession_id}/*fq.gz") optional true into IN_fastq_raw
+    set val({ "$name" != "null" ? "$name" : "$accession_id" }), file("${accession_id}/*fq") optional true into IN_fastq_raw
 
     script:
     """
@@ -80,6 +80,7 @@ if (params.accessions){
         elsenex
             echo "FastQ files won't be compressed because compress_fastq options was set to: '${params.compress_fastq}.'"
         fi
+
     } || {
         # If exit code other than 0
         if [ \$? -eq 0 ]
@@ -114,6 +115,7 @@ process fastp {
 
     script:
     """
+
     fastp -i ${fastq_pair[0]} -I ${fastq_pair[1]} -o ${sample_id}_QC_1.fq.gz -O ${sample_id}_QC_2.fq.gz -h ${sample_id}.html
     """
 
@@ -182,11 +184,54 @@ if (params.mode == "magicblast") {
 
 } else if (params.mode == "hmmer") {
 
-    IN_hmmeDB = Channel.fromPath("${params.hmmdb}*")
+    process prepare_fastq {
 
-    process hmmr {
+    tag {sample_id}
 
+    input:
+    set sample_id, file(fastq_pair) from OUT_fastq_QC
+
+    output:
+    set sample_id, file("*.fq") into OUT_preprare_fastq
+
+    script:
+    """
+    pigz -dc ${fastq_pair} > ${sample_id}.fq
+    """
+    }
+
+    process read_translator {
+
+    tag {sample_id}
+
+    input:
+    set sample_id, file(fastq) from OUT_preprare_fastq
+
+    output:
+    set sample_id, file("*.fa") into OUT_translator
+
+    script:
+    template "read_translator.py"
+    }
+
+    IN_hmmerDB = Channel.value(params.hmmdb)
+    IN_threshold = Channel.value(params.hmmr_threshold)
+
+    process hmmer {
+
+    tag {sample_id}
+
+    input:
+    set sample_id, file(translated_reads) from OUT_translator
+    val hmmerdb from IN_hmmerDB
+    val hmmr_threshold from IN_threshold
+
+    output:
+
+    script:
+    template "hmm_pipeline.sh"
 
     }
+
 
 } else {exit 1, "no recognized mode provided. available ptions: 'magiblast', 'mash', 'hmmer'"}

@@ -3,33 +3,21 @@ set -e
 set -u
 set -o pipefail
 
-while getopts ':q::h::a:' OPTION; do
-       case "$OPTION" in
-	       q)    queryfile="$OPTARG";;
-	       a)    threshold="$OPTARG";;
-	       h)    hmmdir="$OPTARG";;
-               ?)    echo "Script usage: [-h] [dir containing hmm profiles] [-q] [fastq file] [-a] [threshold bitscore for hmmer]"
-       esac
-done      
 
-if (( $OPTIND == 1)); then
-	echo "Incorrect arguments supplied."
-	echo "To run hmm_pipeline.sh, supply the following arguments:"
-	echo "[-h] [directory containing hmm profiles] [-q] [fastq file]"
-	echo "[-a] [bitscore threshold for read to be considered a hit]"
-	echo "in any order."
-	exit 1
-fi
+queryfile="$fastq"
+threshold="$hmmr_threshold"
+hmmdir="$hmmerdb"
+
 
 #Start by translating each read in all 6 possible reading frames using
 #the read_translator.py script.
 count=0
-python read_translator.py $queryfile
+python read_translator.py \$queryfile
 echo "reads translated; beginning HMMsearch; time for each profile will be printed"
 #Use hmmsearch to bounce all 562 HMMs against the fasta file containing the translated reads
-for hmmfile in $hmmdir/*.HMM;
+for hmmfile in \$hmmdir/*.HMM;
 do
-	hmmsearch --noali -T $threshold --acc --incT $threshold -o "hmmresult${count}" $hmmfile translated_reads.fa
+	hmmsearch --noali -T \$threshold --acc --incT \$threshold -o "hmmresult${count}" $hmmfile translated_reads.fa
 	count=`expr $count + 1`
 done
 
