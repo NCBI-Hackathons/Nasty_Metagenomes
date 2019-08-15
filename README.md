@@ -65,7 +65,10 @@ Antimicrobial Resistance Characterization in Metagenomes
       
     #**command line**
     /opt/ncbi-blast-2.9.0+/bin/makeblastdb -in /data/DBs/Bacteria_type_rep_plasmid_cat.fa -parse_seqids -input_type fasta -dbtype nucl -out Bacteria_type_rep_plasmid_refseq.blastdb 
-
+    # Create Mash sketches:
+    ## mash sketch -i AMR.fa
+    ## mash sketch -i -p 12 Bacteria_rep.fna
+    ## mash sketch -i -p 12 Bacteria_typ.fna
       
 ### Step 2.
 # ------------------  
