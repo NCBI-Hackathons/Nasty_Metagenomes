@@ -24,7 +24,7 @@ fi
 #Start by translating each read in all 6 possible reading frames using
 #the read_translator.py script.
 count=0
-python read_translator.py $queryfile -testmode
+python read_translator.py $queryfile
 echo "reads translated; beginning HMMsearch; time for each profile will be printed"
 #Use hmmsearch to bounce all 562 HMMs against the fasta file containing the translated reads
 for hmmfile in $hmmdir/*.HMM;
