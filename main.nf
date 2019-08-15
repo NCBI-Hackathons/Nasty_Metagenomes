@@ -289,9 +289,9 @@ process guided_assembly {
     script:
     """
     cp -L ${fastq_pairs}
+    gunzip ${fastq_pairs}
 
-
-    guidedassembler --cores ${task.cpus} --fastq <(gzip -dc *_1.fq.gz) --fastq <(gzip -dc *_2.fq.gz)  --targets ${baits} --contigs_out ${sample_id}.ga.fa
+    guidedassembler --cores ${task.cpus} --fastq *_1.fq.gz --fastq *_2.fq.gz  --targets ${baits} --contigs_out ${sample_id}.ga.fa
     """
 }
 
