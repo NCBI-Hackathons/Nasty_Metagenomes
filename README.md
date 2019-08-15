@@ -62,7 +62,7 @@ Antimicrobial Resistance Characterization in Metagenomes
     ## Merged Plasmid, Assembly from Type, Reference
       
     #**command line**
-    /opt/ncbi-blast-2.9.0+/bin/makeblastdb -in /data/DBs/Bacteria_type_rep_plasmid_cat.fa -parse_seqids -input_type fasta -dbtype nucl -out Bacteria_type_rep_plasmid_refseq.blastdb 
+    /opt/ncbi-blast-2.9.0+/bin/makeblastdb -in /data/DBs/Bacteria_type_rep_plasmid_cat_nr.fa -parse_seqids -input_type fasta -dbtype nucl -out /data/DBs/Bacteria_type_rep_plasmid_refseq_nr.blastdb -max_file_sz 4GB 
     # Create Mash sketches:
     ## mash sketch -i AMR.fa
     ## mash sketch -i -p 12 Bacteria_rep.fna
@@ -136,7 +136,7 @@ Antimicrobial Resistance Characterization in Metagenomes
     # Parse for Species level and Plasmid identification
     
     #**command line**
-    /opt/ncbi-blast-2.9.0+/bin/blastn -query /data/ERR1600439/magicblast_output/ERR1600439.ga.fa -task blastn -db /data/DBs/Bacteria_type_rep_plasmid_refseq.blastdb -outfmt 6 -evalue 1e-6 -out /data/ERR1600439/magicblast_output/ERR1600439.ga.fa_vs_Bacteria_RefSeq_blastn.out
+    sudo /opt/ncbi-blast-2.9.0+/bin/blastn -query /data/ERR1600439/magicblast_output/ERR1600439.ga.fa -task blastn -db /data/DBs/Bacteria_type_rep_plasmid_refseq_nr.blastdb -outfmt 6 -evalue 1e-6 -out /data/ERR1600439/magicblast_output/ERR1600439.ga.fa_vs_Bacteria_RefSeq_nr_blastn.out -max_target_seqs 100
 #### (Back to [Workflow](#Workflow-Steps))
 
 
