@@ -8,7 +8,7 @@ from datetime import datetime
 
 startTime = datetime.now()
 
-#fastq = "$fastq"
+fastq = "$fastq"
 
 #This function writes a record to the output file.
 def write_record(record_id, orfseq, output_file, translation_num, orientation):
@@ -51,7 +51,7 @@ def process_subfile(subinput_name, suboutput_name):
 
 if __name__ == "__main__":
     line_count = 0
-    with open(sys.argv[1]) as inpt:
+    with open(fastq) as inpt:
         for line in inpt:
             line_count += 1
     
@@ -61,7 +61,7 @@ if __name__ == "__main__":
     num_to_terminate = twentypercent_split
     subset_files = [open('temp_sub_file%s.fa'%i, 'w+') for i in range(0,5)]
     current_file = 0
-    for num_reads, record in enumerate(SeqIO.parse(open(sys.argv[1]), 'fastq')):
+    for num_reads, record in enumerate(SeqIO.parse(open(fastq), 'fastq')):
         subset_files[current_file].write(''.join(['>',record.id, '\n', str(record.seq), '\n']))
         if num_reads > num_to_terminate and current_file < 4:
             current_file += 1
