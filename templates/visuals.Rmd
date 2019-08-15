@@ -14,41 +14,60 @@ library(dplyr)
 
 #Read in contig reference file and blast output file
 ```{r}
-ref <- read.delim("C:\\Program Files\\Git\\Coding\\MicrobiomeAnalysis\\Nasty_Metagenomes\\testing\\output\\ExampleBlastOutput.xlsx")
+ref <- read.delim("C:\\Program Files\\Git\\Coding\\MicrobiomeAnalysis\\Nasty_Metagenomes\\testing\\output\\amrfinder_metadata.txt")
+head(ref)
 #Contig name
 #AMR name
 
-blast <- read.delim("C:\\Program Files\\Git\\Coding\\MicrobiomeAnalysis\\Nasty_Metagenomes\\testing\\output\\ExampleBlastOutput.txt")
+blast <- read.delim("C:\\Program Files\\Git\\Coding\\MicrobiomeAnalysis\\Nasty_Metagenomes\\testing\\output\\BlastOutput.txt")
+head(blast)
 #Query is contig names
 #Species
 #ChromosomeorPlasmid
 
-amr <- read.delim("C:\\Program Files\\Git\\Coding\\MicrobiomeAnalysis\\Nasty_Metagenomes\\testing\\output\\amrfinder_metadata.txt")
+amr <- read.delim("C:\\Program Files\\Git\\Coding\\MicrobiomeAnalysis\\Nasty_Metagenomes\\testing\\output\\AMR_CDS_blastn.txt")
+head(amr)
+colnames(amr)
+#Contig is contigs
 #refseq.nucleotide is AMR name
 
 #rename columns to match Contigs to be merged
-colnames(ref)[colnames(ref)=="ContigID"] <- "ID"
-colnames(blast)[colnames(blast)=="Query"] <- "ID"
-
-#rename columns to match AMR
-colnames(ref)[colnames(ref)=="ContigID"] <- "AMRID"
-colnames(amr)[colnames(amr)=="refseq.nucleotide"]<-"AMRID"
+colnames(amr)[colnames(amr)=="Contig"] <- "ContigID"
+colnames(blast)[colnames(blast)=="Query"] <- "ContigID"
 
 ```
 
 #Create merged database
 ```{r}
-db_merged <- merge(blast, amr,by="ID")
-db_merged <- merge(db_merged, ref,by="ID")
-colnames(db_merged) 
+#Merge by contig id
+db_merged <- merge(blast,amr,by="ContigID")
+colnames(db_merged)
+head(db_merged)
+nrow(db_merge)
+write.table(db_merged,"out.txt")
+
+
+#rename columns to match AMR
+colnames(ref)[colnames(ref)=="refseq.nucleotide"] <- "AMRID"
+colnames(db_merged)[colnames(db_merged)=="AMR"]<-"AMRID"
+
+#Replace . with _ to match
+ref$AMRID <- gsub('\\.', '_', ref$AMRID)
+ref$AMRID
+
+db_merged <- merge(db_merged,ref, by="AMRID")
+head(db_merged)
+
+write.table(db_merged,"out.txt")
+
 ```
 
 #Summary for taxonomy
 ```{r}
-ggplot(db_merged %>% count(AMRsContained, Species) %>%   
+ggplot(db_merged %>% count(product.name, Species) %>%   
          mutate(pct=n/sum(n),               # Calculate percent within each region
                 ypos = cumsum(n) - 0.5*n),  # Calculate label positions
-       aes(AMRsContained, n, fill=Species)) +
+       aes(product.name, n, fill=Species)) +
   geom_bar(stat="identity") +
   geom_text(aes(label=paste0(Species,"-",sprintf("%1.1f", pct*100),"%"), y=ypos)) +
  title("X")
@@ -57,7 +76,7 @@ ggplot(db_merged %>% count(AMRsContained, Species) %>%
 
 #Summary for plasmids
 ```{r}
-ggplot(db_merged %>% count(AMRsContained, ChromosomeOrPlasmid) %>%   
+ggplot(db_merged_plasmid %>% count(AMRsContained, ChromosomeOrPlasmid) %>%   
          mutate(pct=n/sum(n),               # Calculate percent within each region
                 ypos = cumsum(n) - 0.5*n),  # Calculate label positions
        aes(AMRsContained, n, fill=ChromosomeOrPlasmid)) +
