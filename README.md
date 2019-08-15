@@ -41,7 +41,7 @@ Antimicrobial Resistance Characterization in Metagenomes
 4. [SKESA guided assembly](#Step-4)
 5. [Species identification, plasmid identification](#Step-5)
 
-### Step 1. (Back to [top](#Workflow-Steps))
+### Step 1. (Back to [Workflow](#Workflow-Steps))
 # ------------------
     # Download [RefSeq Plasmid Database](https://www.ncbi.nlm.nih.gov/refseq/)
     ## Use [FTP](ftp://ftp.ncbi.nlm.nih.gov/refseq/release/plasmid/) to download plasmid database, and concatinate into one file
@@ -55,9 +55,7 @@ Antimicrobial Resistance Characterization in Metagenomes
     ## Download Assembly: Bacteria, Latest RefSeq, Reference
     
     # Merge Plasmid, Assembly from Type, Reference Databses
-    ## 
     ## Create non-redudant list of accession numbers
-    
     
     # Create Blast Databases
     ## AMR blast db
@@ -70,13 +68,13 @@ Antimicrobial Resistance Characterization in Metagenomes
     ## mash sketch -i -p 12 Bacteria_rep.fna
     ## mash sketch -i -p 12 Bacteria_typ.fna
       
-### Step 2. (Back to [top](#Workflow-Steps))
+### Step 2. (Back to [Workflow](#Workflow-Steps))
 # ------------------  
     # Use Sam tools
 
     #**command line**
 
-### Step 3. (Back to [top](#Workflow-Steps))
+### Step 3. (Back to [Workflow](#Workflow-Steps))
 # ------------------
     # MagicBlast
     # Use AMR finder database as reference
@@ -111,7 +109,7 @@ Antimicrobial Resistance Characterization in Metagenomes
     ## cut -f 5 ERR1600439.amr.screen
 
 
-### Step 4. (Back to [top](#Workflow-Steps))
+### Step 4. (Back to [Workflow](#Workflow-Steps))
 # ------------------
     # SKESA Guided Assembly
     # Guided assembly allows to assemble contigs based on some known sequences used as baits. The assembler stacks kmers and extends the ends of each guide sequence optionally output a list of variants assembled. 
@@ -123,7 +121,7 @@ Antimicrobial Resistance Characterization in Metagenomes
     # to assemble contigs and print out all variants of contigs:
     # guidedassembler_graph --targets ../../AMR_CDS_norm.fasta --consensus ERR1600439.amr.contigs.fa --all_variants ERR1600439.amr.all-contigs.fa --gfa /dev/null --sra_run ERR1600439
 
-### Step 5. (Back to [top](#Workflow-Steps))
+### Step 5. (Back to [Workflow](#Workflow-Steps))
 # ------------------
     # Species and Plasmid Identification
     # Blast AMR hits lists against combined database
