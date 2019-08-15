@@ -1,56 +1,56 @@
-#!usr/bin/perl -w
+#!/usr/local/bin/perl  -w
 use strict;
 
-my $dep = shift @ARGV or die;
-my $fas = shift @ARGV or die;
-my $out = shift @ARGV or die;
+my \$dep = '$depth_file';
+my \$fas = '$amr_reference';
+my \$out = '${sample_id}_amr_bait.fasta';
 
 #read in the depth file and store as hash with reference number as the first key layer, coordinate as the second key layer and coverage as the value
 my %depth = ();
-open (my $DEP, $dep) or die "can't open $dep\n";
-while (my $dep_line = <$DEP>) {
-    chomp $dep_line;
-    my @dep_array = split /\s+/, $dep_line;
-    $depth{$dep_array[0]} -> {$dep_array[1]} = $dep_array[2];
+open (my \$DEP, \$dep) or die "can't open \$dep\n";
+while (my \$dep_line = <\$DEP>) {
+    chomp \$dep_line;
+    my @dep_array = split /\\s+/, \$dep_line;
+    \$depth{\$dep_array[0]} -> {\$dep_array[1]} = \$dep_array[2];
 }
-close $DEP;
+close \$DEP;
 
 #read in the reference fasta file and store as hash with reference number as the key and sequence as the value, reference number should match with that in the depth file
 my %fasta = ();
-open ( my $FAS, $fas ) or die "can't open $fas\n";
-my $def;
-while ( my $f_line = <$FAS> ){
-    chomp $f_line;
-    if ($f_line =~ m/\|(NG_\d+)\|(\d)/) {
-	$def = "$1"."_"."$2";
-	$fasta{$def} = 1;
+open ( my \$FAS, \$fas ) or die "can't open \$fas\n";
+my \$def;
+while ( my \$f_line = <\$FAS> ){
+    chomp \$f_line;
+    if (\$f_line =~ m/\\|(NG_\\d+)\\|(\\d)/) {
+	\$def = "\$1"."_"."\$2";
+	\$fasta{\$def} = 1;
     }
     else {
-	$fasta{$def} .= $f_line;
+	\$fasta{\$def} .= \$f_line;
     }
 }
-close $FAS;
+close \$FAS;
 
 #loop through the depth hash to tally number of base pairs covered and total read coverage in each reference, and calculate the percent coverage and average coverage over covered portion for each reference. Output the reference fasta sequences that have coverage >= 60% and average depth >= 10.
-open (my $OUT, ">$out") or die "can't open $out\n";
-foreach my $key (sort keys %depth) {
-    my $line_counter;
-    my $ref_len;
-    my $cov;
-    my $ref_cov;
-    my $ave_cov;
-    if (defined $fasta{$key}) {
-        $ref_len = length($fasta{$key});
+open (my \$OUT, ">\$out") or die "can't open \$out\n";
+foreach my \$key (sort keys %depth) {
+    my \$line_counter;
+    my \$ref_len;
+    my \$cov;
+    my \$ref_cov;
+    my \$ave_cov;
+    if (defined \$fasta{\$key}) {
+        \$ref_len = length(\$fasta{\$key});
     }
-    foreach my $coord (sort {$a<=>$b} keys %{$depth{$key}}) {
-	$line_counter ++;
-	$cov += $depth{$key}{$coord};
+    foreach my \$coord (sort {\$a<=>\$b} keys %{\$depth{\$key}}) {
+	\$line_counter ++;
+	\$cov += \$depth{\$key}{\$coord};
     }
-    $ref_cov = $line_counter/$ref_len*100;
-    #$ref_cov = sprintf("%.2f",$ref_cov);
-    $ave_cov = $cov/$line_counter;
-    #$ave_cov = sprintf("%.2f",$ave_cov);
-    print $OUT ">$key\n$fasta{$key}\n" if ($ref_cov >= 60 && $ave_cov >= 10);
+    \$ref_cov = \$line_counter/\$ref_len*100;
+    #\$ref_cov = sprintf("%.2f",\$ref_cov);
+    \$ave_cov = \$cov/\$line_counter;
+    #\$ave_cov = sprintf("%.2f",\$ave_cov);
+    print \$OUT ">\$key\n\$fasta{\$key}\n" if (\$ref_cov >= 60 && \$ave_cov >= 10);
 }
-close $OUT;
+close \$OUT;
 exit;

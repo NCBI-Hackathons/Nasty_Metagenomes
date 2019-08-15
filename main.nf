@@ -171,10 +171,13 @@ if (params.mode == "magicblast") {
     each file(amr_reference) from IN_reference
 
     output:
+    set sample_id, file("*.fasta") into OUT_check_coverage
 
     script:
-    template "Cov_dep_cal.pl"
+    template "magicBlast_depth_parser.pl"
     }
+
+
 
 } else if (params.mode == "mash") {
 

@@ -3,7 +3,7 @@ use strict;
 
 my \$dep = '$depth_file';
 my \$fas = '$amr_reference';
-my \$out = 'out.fasta';
+my \$out = 'out.tab';
 
 #read in the depth file and store as hash with reference number as the first key layer, coordinate as the second key layer and coverage as the value
 my %depth = ();
