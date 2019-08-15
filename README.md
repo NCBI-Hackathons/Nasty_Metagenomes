@@ -140,6 +140,15 @@ Antimicrobial Resistance Characterization in Metagenomes
 #### (Back to [Workflow](#Workflow-Steps))
 
 
+### Step 6.
+# ------------------
+    # Alignment and stats
+    
+    # build blast db for contigs
+    # makeblastdb -parse_seqids -in ERR1600439.ga.fa -input_type fasta -dbtype nucl -out ERR1600439.ga.blastdb
+    # align reads onto the contigs
+    # magicblast -db ERR1600439.ga.blastdb -query ERR1600439*.fastq | samtools view -Sb - | samtools sort - > ERR1600439_amr_contigs.bam
+
 ## Authors
 * Xin Huang
   * National Human Genome Research Institute, National Institutes of Health, Bethesda, MD 20851
