@@ -121,6 +121,8 @@ process fastp {
 
 }
 
+OUT_fastq_QC.into{ OUT_fastq_QC_1 ; OUT_fastq_QC_2 }
+
 if (params.mode == "magicblast") {
 
     IN_blastDB = Channel.fromPath("${params.blastdb}*")
@@ -130,7 +132,7 @@ if (params.mode == "magicblast") {
     tag {sample_id}
 
     input:
-    set sample_id, file(fastq_pair) from OUT_fastq_QC
+    set sample_id, file(fastq_pair) from OUT_fastq_QC_1
     file blastdb from IN_blastDB.collect()
 
     output:
@@ -173,7 +175,7 @@ if (params.mode == "magicblast") {
     each file(amr_reference) from IN_reference
 
     output:
-    set sample_id, file("*.fasta") into OUT_check_coverage
+    set sample_id, file("*.fasta") into OUT_baits
 
     script:
     template "magicBlast_depth_parser.pl"
@@ -206,7 +208,7 @@ if (params.mode == "magicblast") {
     tag {sample_id}
 
     input:
-    set sample_id, file(fastq_pair) from OUT_fastq_QC
+    set sample_id, file(fastq_pair) from OUT_fastq_QC_1
     file(mash_sketch) from OUT_mash_sketch
 
     output:
@@ -227,7 +229,7 @@ if (params.mode == "magicblast") {
     tag {sample_id}
 
     input:
-    set sample_id, file(fastq_pair) from OUT_fastq_QC
+    set sample_id, file(fastq_pair) from OUT_fastq_QC_1
 
     output:
     set sample_id, file("*.fq") into OUT_preprare_fastq
@@ -279,14 +281,38 @@ process guided_assembly {
     tag {sample_id}
 
     input:
-    set sample_id, file(baits), file(fastq_pairs) from LALA // create this!
+    set sample_id, file(baits), file(fastq_pairs) from OUT_baits.join(OUT_fastq_QC_2)
 
     output:
     set sample_id, file("*.ga.fa") into OUT_guided_assembly
 
     script:
     """
-    guidedassembler --cores ${task.cpus} --fastq ${fastq_pairs[0]} --fastq ${fastq_pairs[1]} --targets ${baits} -contigs_out ${sample_id}.ga.fa
+    cp -L ${fastq_pairs}
+
+
+    guidedassembler --cores ${task.cpus} --fastq <(gzip -dc *_1.fq.gz) --fastq <(gzip -dc *_2.fq.gz)  --targets ${baits} --contigs_out ${sample_id}.ga.fa
+    """
+}
+
+process get_refseq {
+
+    tag 'refseq'
+    storeDir 'refseq/'
+
+    input:
+    file(refseq_reference) from IN_reference
+
+    output:
+    file("*blastdb*") into OUT_refseq
+
+    script:
+    """
+    # get bastdb list
+    wget -q  https://storage.googleapis.com/strides-microbial-resources/ -O - | xmllint --format - | sed -rn 's/<Key>(.*)<\\/Key>/\\1/p' | while read f; do echo -e "https://storage.googleapis.com/strides-microbial-resources/$f" >> toDownload.txt ; done
+
+    # download
+    wget -i toDownload.txt
     """
 }
 
@@ -296,12 +322,16 @@ process context_id {
 
     input:
     set sample_id, file(assembly) from OUT_guided_assembly
+    file(refseq) from OUT_refseq
 
     output:
 
     script:
     """
-    blastn -query ${assembly} -task blastn -db /data/DBs/Bacteria_type_rep_plasmid_refseq.blastdb -outfmt 6 -evalue 1e-6 -out ${sample_id}_blastn.out
+
+    echo \$(echo ${refseq[0]} | sed -r 's/^(.*)\\.[a-z]+\$/\\1/') > blastdb_name.txt
+
+    blastn -query ${assembly} -task blastn -db \$(cat blastdb_name.txt) -outfmt 6 -evalue 1e-6 -out ${sample_id}_blastn.out
 
     """
 
