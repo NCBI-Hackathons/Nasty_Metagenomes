@@ -136,7 +136,7 @@ Antimicrobial Resistance Characterization in Metagenomes
     # Parse for Species level and Plasmid identification
     
     #**command line**
-    sudo /opt/ncbi-blast-2.9.0+/bin/blastn -query /data/ERR1600439/magicblast_output/ERR1600439.ga.fa -task blastn -db /data/DBs/Bacteria_type_rep_plasmid_refseq_nr.blastdb -outfmt 6 -evalue 1e-6 -out /data/ERR1600439/magicblast_output/ERR1600439.ga.fa_vs_Bacteria_RefSeq_nr_blastn.out -max_target_seqs 100
+    sudo /opt/ncbi-blast-2.9.0+/bin/blastn -query /data/ERR1600439/magicblast_output/ERR1600439.ga.fa -task blastn -db /data/DBs/Bacteria_type_rep_plasmid_refseq_nr.blastdb -outfmt 6 -evalue 1e-6 -out /data/ERR1600439/magicblast_output/ERR1600439.ga.fa_vs_Bacteria_RefSeq_nr_blastn.out -max_target_seqs 10 -num_threads 8
 #### (Back to [Workflow](#Workflow-Steps))
 
 
