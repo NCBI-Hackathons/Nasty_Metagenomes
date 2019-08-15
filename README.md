@@ -108,3 +108,19 @@ Antimicrobial Resistance Characterization in Metagenomes
     
     #**command line**
     /opt/ncbi-blast-2.9.0+/bin/blastn -query /data/ERR1600439/magicblast_output/ERR1600439.ga.fa -task blastn -db /data/DBs/Bacteria_type_rep_plasmid_refseq.blastdb -outfmt 6 -evalue 1e-6 -out /data/ERR1600439/magicblast_output/ERR1600439.ga.fa_vs_Bacteria_RefSeq_blastn.out
+
+## Authors
+Xin Huang
+National Human Genome Research Institute, National Institutes of Health, Bethesda, MD 20851
+
+Inês Mendes
+Instituto de Microbiologia, Instituto de Medicina Molecular, Faculdade de Medicina, Universidade de Lisboa, Lisboa, Portugal; University of Groningen, University Medical Center Groningen, Department of Medical Microbiology and Infection Prevention, Groningen, The Netherlands
+
+Jonathan Parkinson
+Qpex Biopharma, Inc., San Diego, CA 92121
+
+Samantha Sevilla
+Cancer Genomics Research Laboratory, Division of Cancer Epidemiology and Genetics, National Institutes of Health, Leidos Biomedical, Inc., Gaithersburg, MD 20877
+
+Vadim Zalunin
+National Center for Biotechnology Information, National Library of Medicine, National Institutes of Health, Bethesda, MD 20894, USA
