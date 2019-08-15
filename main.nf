@@ -177,10 +177,16 @@ if (params.mode == "magicblast") {
     template "magicBlast_depth_parser.pl"
     }
 
-
-
 } else if (params.mode == "mash") {
 
+
 } else if (params.mode == "hmmer") {
+
+    IN_hmmeDB = Channel.fromPath("${params.hmmdb}*")
+
+    process hmmr {
+
+
+    }
 
 } else {exit 1, "no recognized mode provided. available ptions: 'magiblast', 'mash', 'hmmer'"}
