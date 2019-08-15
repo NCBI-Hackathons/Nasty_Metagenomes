@@ -6,19 +6,20 @@ Antimicrobial Resistance Characterization in Metagenomes
 * [Bugs_And_Drugs](https://github.com/NCBI-Hackathons/Bugs_And_Drugs) (Based on MagicBlast)
 
 ### Goals:
-* Compare alignment of FASTQ files from SRA Id's to MagicBlast and HMM-er using reference AMR databased (CARD, Resfinder, and ARG-ANNOT)
+* Compare alignment of FASTQ files 1) MagicBlast 2) HMM-er and 3) MASH using reference AMR Finder database
 * Generate a "hits" file with aligned reads to each of the publically available AMR databases
-* Determine contextual information about AMR genes by 1) BLAST against RefSeq database to determine species level information 2) determine whether the AMR's are on a plasmid
+* Determine species and plasmid contextual information about AMR genes by creating a merged chromosome and plasmid database and BLAST-ting "hits" 
 
 ### Dependencies & Tools
 * [MagicBlast](https://ncbi.github.io/magicblast/)
 * [HHM-er](https://github.com/EddyRivasLab/hmmer)
+* [MASH](https://github.com/marbl/Mash)
 * [SamTools](https://github.com/samtools)
 * [Skesa](https://github.com/ncbi/SKESA)
 * [Nextflow](https://www.nextflow.io/)
 * [Docker](https://www.docker.com/)
 
-### AMR Databases
+### AMR Database
 * [AMR Finder](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA313047), which includes:
   * [CARD](https://card.mcmaster.ca/)
   * [Resfinder](https://cge.cbs.dtu.dk/services/ResFinder/)
@@ -82,8 +83,16 @@ Antimicrobial Resistance Characterization in Metagenomes
       
     # HHM-er
     # Use AMR finder database as a reference
+    # Translate all 6 reading frames
+    # Create hit lits of representative AMR genes
       
     #**command line**
+    
+    # MASH
+    # 
+    
+    #**command line**
+
 
 ### Step 4.
 # ------------------
@@ -99,3 +108,15 @@ Antimicrobial Resistance Characterization in Metagenomes
     
     #**command line**
     /opt/ncbi-blast-2.9.0+/bin/blastn -query /data/ERR1600439/magicblast_output/ERR1600439.ga.fa -task blastn -db /data/DBs/Bacteria_type_rep_plasmid_refseq.blastdb -outfmt 6 -evalue 1e-6 -out /data/ERR1600439/magicblast_output/ERR1600439.ga.fa_vs_Bacteria_RefSeq_blastn.out
+
+## Authors
+* Xin Huang
+  * National Human Genome Research Institute, National Institutes of Health, Bethesda, MD 20851
+* Inês Mendes
+  * Instituto de Microbiologia, Instituto de Medicina Molecular, Faculdade de Medicina, Universidade de Lisboa, Lisboa, Portugal; University of Groningen, University Medical Center Groningen, Department of Medical Microbiology and Infection Prevention, Groningen, The Netherlands
+* Jonathan Parkinson
+  * Qpex Biopharma, Inc., San Diego, CA 92121
+* Samantha Sevilla
+  * Cancer Genomics Research Laboratory, Division of Cancer Epidemiology and Genetics, National Institutes of Health, Leidos Biomedical, Inc., Gaithersburg, MD 20877
+* Vadim Zalunin
+  * National Center for Biotechnology Information, National Library of Medicine, National Institutes of Health, Bethesda, MD 20894, USA
