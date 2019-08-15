@@ -9,8 +9,6 @@ if len(sys.argv) not in [2,3]:
     exit()
 #If in testmode, only look at the first 100,000 reads.
 testmode=False
-if sys.argv[2] == '-testmode':
-    testmode = True
 
 #This function writes a record to the output file.
 def write_record(record_id, orfseq, output_file, translation_num, orientation):
