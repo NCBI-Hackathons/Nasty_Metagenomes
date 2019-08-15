@@ -18,6 +18,8 @@ Antimicrobial Resistance Characterization in Metagenomes
 * [Skesa](https://github.com/ncbi/SKESA)
 * [Nextflow](https://www.nextflow.io/)
 * [Docker](https://www.docker.com/)
+* [Miniconda](https://docs.conda.io/en/latest/miniconda.html)
+* [Biopython](https://anaconda.org/anaconda/biopython)
 
 ### AMR Database
 * [AMR Finder](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA313047), which includes:
@@ -83,8 +85,11 @@ Antimicrobial Resistance Characterization in Metagenomes
       
     # HHM-er
     # Use AMR finder database as a reference
-    # Translate all 6 reading frames
-    # Create hit lits of representative AMR genes
+    # Translate each read into protein in all six possible reading frames
+    # Break translated reads into ORFs; discard any length 25 aa or less
+    # Use hmmsearch to run 562 HMM profiles against the translated reads
+    # For each hmm profile that scored a hit, extract a representative nucleotide sequence
+    # Output the representative nucleotide sequences for guided assembly
       
     #**command line**
     
