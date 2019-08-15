@@ -1,0 +1,12 @@
+---
+title: "R Notebook"
+output: pdf_document
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r}
+plot(cars)
+```
+
