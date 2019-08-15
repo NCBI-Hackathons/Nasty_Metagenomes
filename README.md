@@ -148,7 +148,7 @@ Antimicrobial Resistance Characterization in Metagenomes
     
     #**command line**
     # makeblastdb -parse_seqids -in ERR1600439.ga.fa -input_type fasta -dbtype nucl -out ERR1600439.ga.blastdb
-    # magicblast -db ERR1600439.ga.blastdb -query ERR1600439*.fastq | samtools view -Sb -F 4 - | samtools sort - > ERR1600439_amr_contigs.bam
+    # magicblast -db ERR1600439.ga.blastdb -query ERR1600439*.fastq  -infmt fastq | samtools view -Sb -F 4 - | samtools sort - > ERR1600439_amr_contigs.bam
 #### (Back to [Workflow](#Workflow-Steps))
 
 
