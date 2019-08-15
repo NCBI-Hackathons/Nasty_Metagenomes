@@ -100,9 +100,15 @@ Antimicrobial Resistance Characterization in Metagenomes
     [threshold bitscore]
     
     # MASH
-    # 
+    # Given a fasta file with AMR genes we build a MASH sketch and screen the reads against the sketch. 
+    # This produces kmer distances between the read set and each AMR, which then is used to extract only 
+    # the AMRs that are close the readset.
     
     #**command line**
+    # Screen the reads against the AMR sequences with the minimum score 0.85:
+    ## mash screen -p 12 -w AMR.fa.msh ERR1600439*.fastq | awk '$1>0.85' > ERR1600439.amr.screen
+    # produce a list of candidate AMRs:
+    ## cut -f 5 ERR1600439.amr.screen
 
 
 ### Step 4.
