@@ -82,6 +82,8 @@ Antimicrobial Resistance Characterization in Metagenomes
       
     # HHM-er
     # Use AMR finder database as a reference
+    # Translate all 6 reading frames
+    # Create hit lits of representative AMR genes
       
     #**command line**
 
