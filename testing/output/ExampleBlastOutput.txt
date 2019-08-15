@@ -1,0 +1,24 @@
+Query	Hit	Species	ChromosomeOrPlasmid	AlignLen	%ID	AMRsContained	AlignLen	%ID
+Contig1_kmer41	NZ_CP040993.1	Klebsiella pneumoniae	Chromosome	17637	98.316			
+Contig1_kmer41	NZ_KN046818.1	Klebsiella pneumoniae	Chromosome	17637	98.316			
+Contig1_kmer41	NZ_UAWR01000005.1	Klebsiella pneumoniae	Chromosome	17637	98.322			
+Contig2_kmer41	NZ_LN681177.1	Klebsiella pneumoniae	Chromosome	31590	98.902			
+Contig3_kmer41	NZ_LN681173.1	Klebsiella pneumoniae	Chromosome	70416	99.199			
+Contig4_kmer41	NZ_BCQC01000002.1	Enterococcus faecalis	Chromosome	21653	100			
+Contig4_kmer41	NZ_KB944590.1	Enterococcus faecalis	Chromosome	21653	100			
+Contig4_kmer41	NZ_UARR01000008.1	Enterococcus faecalis	Chromosome	21653	100			
+Contig5_kmer41	NZ_AJJI01000014.1	Klebsiella pneumoniae	Chromosome	62178	99.151			
+Contig5_kmer41	NZ_BCTV01000024.1	Klebsiella pneumoniae	Chromosome	62160	99.151			
+Contig5_kmer41	NZ_KN046818.1	Klebsiella pneumoniae	Chromosome	62178	99.151			
+Contig5_kmer41	NZ_UAWR01000006.1	Klebsiella pneumoniae	Chromosome	62178	99.151			
+Contig6_kmer41	NC_006871.1	Staphylococcus lentus	Plasmid	1043	100			
+Contig6_kmer41	NC_016140.1	Staphylococcus hyicus	Plasmid	1043	100			
+Contig6_kmer41	NC_018969.1	Staphylococcus aureus	Plasmid	1043	100			
+Contig6_kmer41	NZ_CP027424.1	Staphylococcus cohnii	Plasmid	1043	100			
+Contig6_kmer41	NZ_CP029648.1	Staphylococcus aureus	Plasmid	1043	100			
+Contig6_kmer41	NZ_CP033783.1	Staphylococcus epidermidis	Plasmid	1043	100			
+Contig6_kmer41	NZ_LR130514.1	Staphylococcus aureus	Plasmid	1043	100			
+Contig6_kmer41	NZ_LT571451.1	Staphylococcus epidermidis	Plasmid	1043	100			
+Contig6_kmer41	NZ_PPQX01000089.1	Staphylococcus hominis	Chromosome	1043	100			
+Contig6_kmer41	NZ_SRLF01000038.1	Staphylococcus petrasii	Plasmid	1043	100			
+Contig7_kmer41	NZ_KB944590.1	Enterococcus faecalis	Chromosome	20668	99.995			

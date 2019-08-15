@@ -1,0 +1,67 @@
+---
+title: "R Notebook"
+output: pdf_document
+editor_options: 
+  chunk_output_type: console
+---
+#Install 
+```{r}
+install.packages("eulerr")
+library(ggplot2)
+library(dplyr)
+```
+
+
+#Read in contig reference file and blast output file
+```{r}
+ref <- read.delim("C:\\Program Files\\Git\\Coding\\MicrobiomeAnalysis\\Nasty_Metagenomes\\testing\\output\\ExampleBlastOutput.xlsx")
+#Contig name
+#AMR name
+
+blast <- read.delim("C:\\Program Files\\Git\\Coding\\MicrobiomeAnalysis\\Nasty_Metagenomes\\testing\\output\\ExampleBlastOutput.txt")
+#Query is contig names
+#Species
+#ChromosomeorPlasmid
+
+amr <- read.delim("C:\\Program Files\\Git\\Coding\\MicrobiomeAnalysis\\Nasty_Metagenomes\\testing\\output\\amrfinder_metadata.txt")
+#refseq.nucleotide is AMR name
+
+#rename columns to match Contigs to be merged
+colnames(ref)[colnames(ref)=="ContigID"] <- "ID"
+colnames(blast)[colnames(blast)=="Query"] <- "ID"
+
+#rename columns to match AMR
+colnames(ref)[colnames(ref)=="ContigID"] <- "AMRID"
+colnames(amr)[colnames(amr)=="refseq.nucleotide"]<-"AMRID"
+
+```
+
+#Create merged database
+```{r}
+db_merged <- merge(blast, amr,by="ID")
+db_merged <- merge(db_merged, ref,by="ID")
+colnames(db_merged) 
+```
+
+#Summary for taxonomy
+```{r}
+ggplot(db_merged %>% count(AMRsContained, Species) %>%   
+         mutate(pct=n/sum(n),               # Calculate percent within each region
+                ypos = cumsum(n) - 0.5*n),  # Calculate label positions
+       aes(AMRsContained, n, fill=Species)) +
+  geom_bar(stat="identity") +
+  geom_text(aes(label=paste0(Species,"-",sprintf("%1.1f", pct*100),"%"), y=ypos)) +
+ title("X")
+
+```
+
+#Summary for plasmids
+```{r}
+ggplot(db_merged %>% count(AMRsContained, ChromosomeOrPlasmid) %>%   
+         mutate(pct=n/sum(n),               # Calculate percent within each region
+                ypos = cumsum(n) - 0.5*n),  # Calculate label positions
+       aes(AMRsContained, n, fill=ChromosomeOrPlasmid)) +
+  geom_bar(stat="identity") +
+  geom_text(aes(label=paste0(ChromosomeOrPlasmid,"-",sprintf("%1.1f", pct*100),"%"), y=ypos)) +
+ title("X")
+```
