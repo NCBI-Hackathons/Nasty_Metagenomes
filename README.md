@@ -42,7 +42,8 @@ Antimicrobial Resistance Characterization in Metagenomes
 5. [Species identification, plasmid identification](#Step-5)
 
 ### Step 1. 
-# ------------------ (Back to [Workflow](#Workflow-Steps))
+# ------------------ 
+####(Back to [Workflow](#Workflow-Steps))
     # Download [RefSeq Plasmid Database](https://www.ncbi.nlm.nih.gov/refseq/)
     ## Use [FTP](ftp://ftp.ncbi.nlm.nih.gov/refseq/release/plasmid/) to download plasmid database, and concatinate into one file
     
