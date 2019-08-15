@@ -84,7 +84,8 @@ Antimicrobial Resistance Characterization in Metagenomes
     /opt/magicblast/ncbi-magicblast-1.4.0/bin/magicblast -sra ERR1600439 -db /data/AMR_CDS.blastdb -outfmt sam -out ERR1600439_v_AMR_CDS_magicblast_sam.out -num_threads 8 -paired -no_unaligned
       
     # HHM-er
-    # Use AMR finder database as a reference
+    # Use AMR finder database as a reference; use a user-specified bitscore as a threshold
+    # to filter hmm hits.
     # Translate each read into protein in all six possible reading frames
     # Break translated reads into ORFs; discard any length 25 aa or less
     # Use hmmsearch to run 562 HMM profiles against the translated reads
@@ -92,6 +93,8 @@ Antimicrobial Resistance Characterization in Metagenomes
     # Output the representative nucleotide sequences for guided assembly
       
     #**command line**
+    ./hmm_pipeline.sh -q [fastq file path] -h [path to hmm_databases directory] -a 
+    [threshold bitscore]
     
     # MASH
     # 
