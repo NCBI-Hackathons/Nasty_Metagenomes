@@ -210,11 +210,11 @@ if (params.mode == "magicblast") {
     file(mash_sketch) from OUT_mash_sketch
 
     output:
-    set sample_id, file("*.screen)" into OUT_mash_screen
+    set sample_id, file("*.screen") into OUT_mash_screen
 
     script:
     """
-    mash screen -p $task.cpu -w ${mash_sketch} ${fastq_pair} | awk '$1>0.85' > ${sample_id}.amr.screen
+    mash screen -p ${task.cpus} -w ${mash_sketch} ${fastq_pair} | awk '\$1>${params.mash_treshold}' > ${sample_id}.amr.screen
     cut -f 5 ${sample_id}.amr.screen
     """
     }
@@ -271,5 +271,39 @@ if (params.mode == "magicblast") {
 
     }
 
-
 } else {exit 1, "no recognized mode provided. available ptions: 'magiblast', 'mash', 'hmmer'"}
+
+
+process guided_assembly {
+
+    tag {sample_id}
+
+    input:
+    set sample_id, file(baits), file(fastq_pairs) from LALA // create this!
+
+    output:
+    set sample_id, file("*.ga.fa") into OUT_guided_assembly
+
+    script:
+    """
+    guidedassembler --cores ${task.cpus} --fastq ${fastq_pairs[0]} --fastq ${fastq_pairs[1]} --targets ${baits} -contigs_out ${sample_id}.ga.fa
+    """
+}
+
+process context_id {
+
+    tag {sample_id}
+
+    input:
+    set sample_id, file(assembly) from OUT_guided_assembly
+
+    output:
+
+    script:
+    """
+    blastn -query ${assembly} -task blastn -db /data/DBs/Bacteria_type_rep_plasmid_refseq.blastdb -outfmt 6 -evalue 1e-6 -out ${sample_id}_blastn.out
+
+    """
+
+
+}
