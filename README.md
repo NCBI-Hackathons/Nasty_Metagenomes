@@ -18,6 +18,8 @@ Antimicrobial Resistance Characterization in Metagenomes
 * [Skesa](https://github.com/ncbi/SKESA)
 * [Nextflow](https://www.nextflow.io/)
 * [Docker](https://www.docker.com/)
+* [Miniconda](https://docs.conda.io/en/latest/miniconda.html)
+* [Biopython](https://anaconda.org/anaconda/biopython)
 
 ### AMR Database
 * [AMR Finder](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA313047), which includes:
@@ -63,7 +65,10 @@ Antimicrobial Resistance Characterization in Metagenomes
       
     #**command line**
     /opt/ncbi-blast-2.9.0+/bin/makeblastdb -in /data/DBs/Bacteria_type_rep_plasmid_cat.fa -parse_seqids -input_type fasta -dbtype nucl -out Bacteria_type_rep_plasmid_refseq.blastdb 
-
+    # Create Mash sketches:
+    ## mash sketch -i AMR.fa
+    ## mash sketch -i -p 12 Bacteria_rep.fna
+    ## mash sketch -i -p 12 Bacteria_typ.fna
       
 ### Step 2.
 # ------------------  
@@ -82,11 +87,17 @@ Antimicrobial Resistance Characterization in Metagenomes
     /opt/magicblast/ncbi-magicblast-1.4.0/bin/magicblast -sra ERR1600439 -db /data/AMR_CDS.blastdb -outfmt sam -out ERR1600439_v_AMR_CDS_magicblast_sam.out -num_threads 8 -paired -no_unaligned
       
     # HHM-er
-    # Use AMR finder database as a reference
-    # Translate all 6 reading frames
-    # Create hit lits of representative AMR genes
+    # Use AMR finder database as a reference; use a user-specified bitscore as a threshold
+    # to filter hmm hits.
+    # Translate each read into protein in all six possible reading frames
+    # Break translated reads into ORFs; discard any length 25 aa or less
+    # Use hmmsearch to run 562 HMM profiles against the translated reads
+    # For each hmm profile that scored a hit, extract a representative nucleotide sequence
+    # Output the representative nucleotide sequences for guided assembly
       
     #**command line**
+    ./hmm_pipeline.sh -q [fastq file path] -h [path to hmm_databases directory] -a 
+    [threshold bitscore]
     
     # MASH
     # 
