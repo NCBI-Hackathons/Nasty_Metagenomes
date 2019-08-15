@@ -1,24 +1,29 @@
-import gzip, Bio, sys
+import Bio, sys
 from Bio import SeqIO
 from datetime import datetime
 
 startTime = datetime.now()
 
-if len(sys.argv) is not in [2,3]:
-    print('Incorrect # of arguments! Please supply path to gzipped FASTQ as argument to script.')
+if len(sys.argv) not in [2,3]:
+    print('Incorrect # of arguments! Please supply path to FASTQ as argument to script.')
     exit()
-
+#If in testmode, only look at the first 100,000 reads.
 testmode=False
 if sys.argv[2] == '-testmode':
     testmode = True
 
+#This function writes a record to the output file.
 def write_record(record_id, orfseq, output_file, translation_num, orientation):
     output_line = ''.join(['>', record_id, '_%s_'%orientation,
                         str(translation_num), '\n', orfseq, '\n', '\n'])
     output_file.write(output_line)
 
-
-with gzip.open(sys.argv[1], 'rt') as in_file:
+#Loop through the read file supplied as an argument.
+#For each read, translate in all 6 possible reading frames and break up
+#into ORFs. For all ORFs with lengths greater than 25 aa,
+#write to the query file that we will search the HMMs against in the
+#next step.
+with open(sys.argv[1]) as in_file:
     with open('translated_reads.fa', 'w+') as out_file:
         for num_reads, record in enumerate(SeqIO.parse(in_file, 'fastq')):
             counter = 0
@@ -43,11 +48,11 @@ with gzip.open(sys.argv[1], 'rt') as in_file:
                 else:
                     write_record(record.id, str(reverse_pass), out_file, counter, 'reverse')
                     counter += 1
-        if num_reads % 50000 == 0:
-            print('%s reads processed'%num_reads)
-            if testmode == True:
-                print('Running in test mode; first 50,000 reads processed.')
-                exit()
+            if num_reads % 250000 == 0 and num_reads > 0:
+                print('%s reads complete'%num_reads)
+                if testmode == True:
+                    print('running in test mode; 25,000 reads processed.')
+                    break
 
 print('This script processed %s reads'%num_reads)
 print('Time elapsed: %s'%(datetime.now() - startTime))
