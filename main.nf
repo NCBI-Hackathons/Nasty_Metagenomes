@@ -181,6 +181,44 @@ if (params.mode == "magicblast") {
 
 } else if (params.mode == "mash") {
 
+    IN_reference = Channel.fromPath("${params.reference}")
+
+    process mash_sketch {
+
+    tag {amr_reference}
+    storeDir 'mash_sketch/'
+
+    input:
+    file(amr_reference) from IN_reference
+
+    output:
+    file("*.msh") into OUT_mash_sketch
+
+    script:
+    """
+    mash sketch -i ${amr_reference}
+    """
+
+    }
+
+    process mash_screen {
+
+    tag {sample_id}
+
+    input:
+    set sample_id, file(fastq_pair) from OUT_fastq_QC
+    file(mash_sketch) from OUT_mash_sketch
+
+    output:
+    set sample_id, file("*.screen)" into OUT_mash_screen
+
+    script:
+    """
+    mash screen -p $task.cpu -w ${mash_sketch} ${fastq_pair} | awk '$1>0.85' > ${sample_id}.amr.screen
+    cut -f 5 ${sample_id}.amr.screen
+    """
+    }
+
 
 } else if (params.mode == "hmmer") {
 
