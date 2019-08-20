@@ -288,10 +288,12 @@ process guided_assembly {
 
     script:
     """
-    cp -L ${fastq_pairs}
-    gunzip ${fastq_pairs}
+    mkdir temp
+    cp -L ${fastq_pairs} temp/
+    rm ${fastq_pairs} && mv temp/* . && rm -r temp
+    gunzip *.gz
 
-    guidedassembler --cores ${task.cpus} --fastq *_1.fq.gz --fastq *_2.fq.gz  --targets ${baits} --contigs_out ${sample_id}.ga.fa
+    guidedassembler --cores ${task.cpus} --fastq *_1.* --fastq *_2.*  --targets ${baits} --contigs_out ${sample_id}.ga.fa
     """
 }
 
