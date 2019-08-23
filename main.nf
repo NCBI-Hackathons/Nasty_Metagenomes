@@ -248,13 +248,13 @@ if (params.mode == "magicblast") {
     set sample_id, file(fastq) from OUT_preprare_fastq
 
     output:
-    set sample_id, file("*.fa") into OUT_translator
+    set sample_id, file("translated_reads.fa") into OUT_translator
 
     script:
     template "read_translator.py"
     }
 
-    IN_hmmerDB = Channel.value(params.hmmdb)
+    IN_hmmerDB = Channel.fromPath(params.hmmdb)
     IN_threshold = Channel.value(params.hmmr_threshold)
 
     process hmmer {
@@ -263,17 +263,42 @@ if (params.mode == "magicblast") {
 
     input:
     set sample_id, file(translated_reads) from OUT_translator
-    val hmmerdb from IN_hmmerDB
+    file hmmerdb from IN_hmmerDB.collect()
     val hmmr_threshold from IN_threshold
 
     output:
+    set sample_id, file("hmmresult*") into OUT_hmmer
 
     script:
-    template "hmm_pipeline.sh"
+    """
+    count=0
 
+    #echo ${hmmerdb}
+
+    for hmmfile in ${hmmerdb};
+    do
+	    hmmsearch --cpu ${task.cpus} --noali -T ${hmmr_threshold} --acc --incT ${hmmr_threshold} -o "hmmresult_\$count" \$hmmfile ${translated_reads}
+	    count=`expr \$count + 1`
+    done
+    """
     }
 
-} else {exit 1, "no recognized mode provided. available ptions: 'magiblast', 'mash', 'hmmer'"}
+    process hits_compiler{
+
+    tag {sample_id}
+
+    input:
+    set sample_id, file(hmmresult) from OUT_hmmer
+
+    output:
+    set sample_id, file("hit_nucleotide_seqs.fa") into OUT_baits
+
+    script:
+    template "hits_compiler.py"
+    }
+
+
+} else {exit 1, "no recognized mode provided. available options: 'magiblast', 'mash', 'hmmer'"}
 
 
 process guided_assembly {
@@ -297,45 +322,3 @@ process guided_assembly {
     """
 }
 
-process get_refseq {
-
-    tag 'refseq'
-    storeDir 'refseq/'
-
-    input:
-    file(refseq_reference) from IN_reference
-
-    output:
-    file("*blastdb*") into OUT_refseq
-
-    script:
-    """
-    # get bastdb list
-    wget -q  https://storage.googleapis.com/strides-microbial-resources/ -O - | xmllint --format - | sed -rn 's/<Key>(.*)<\\/Key>/\\1/p' | while read f; do echo -e "https://storage.googleapis.com/strides-microbial-resources/$f" >> toDownload.txt ; done
-
-    # download
-    wget -i toDownload.txt
-    """
-}
-
-process context_id {
-
-    tag {sample_id}
-
-    input:
-    set sample_id, file(assembly) from OUT_guided_assembly
-    file(refseq) from OUT_refseq
-
-    output:
-
-    script:
-    """
-
-    echo \$(echo ${refseq[0]} | sed -r 's/^(.*)\\.[a-z]+\$/\\1/') > blastdb_name.txt
-
-    blastn -query ${assembly} -task blastn -db \$(cat blastdb_name.txt) -outfmt 6 -evalue 1e-6 -out ${sample_id}_blastn.out
-
-    """
-
-
-}

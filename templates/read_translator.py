@@ -10,17 +10,31 @@ startTime = datetime.now()
 
 fastq = "$fastq"
 
-#This function writes a record to the output file.
 def write_record(record_id, orfseq, output_file, translation_num, orientation):
-    output_line = ''.join(['>', record_id, '_%s_'%orientation, str(translation_num), '\n', orfseq, '\n', '\n'])
+    """
+    This function writes a record to the output file.
+    :param record_id:
+    :param orfseq:
+    :param output_file:
+    :param translation_num:
+    :param orientation:
+    :return:
+    """
+    output_line = ''.join(['>', record_id, '_%s_'%orientation, str(translation_num), '\\n', orfseq, '\\n', '\\n'])
     output_file.write(output_line)
 
-#Loop through the read file supplied as an argument.
-#For each read, translate in all 6 possible reading frames and break up
-#into ORFs. For all ORFs with lengths greater than 25 aa,
-#write to the query file that we will search the HMMs against in the
-#next step.
+
 def process_subfile(subinput_name, suboutput_name):
+    """
+    Loop through the read file supplied as an argument.
+    #For each read, translate in all 6 possible reading frames and break up
+    into ORFs. For all ORFs with lengths greater than 25 aa,
+    write to the query file that we will search the HMMs against in the
+    next step.
+    :param subinput_name:
+    :param suboutput_name:
+    :return:
+    """
     with open(subinput_name, "r") as in_file:
         with open(suboutput_name, 'w+') as out_file:
             for num_reads, record in enumerate(SeqIO.parse(in_file, 'fasta')):
@@ -49,6 +63,7 @@ def process_subfile(subinput_name, suboutput_name):
                 if num_reads % 250000 == 0 and num_reads > 0:
                     print('%s reads complete'%num_reads)
 
+
 if __name__ == "__main__":
     line_count = 0
     with open(fastq) as inpt:
@@ -62,7 +77,7 @@ if __name__ == "__main__":
     subset_files = [open('temp_sub_file%s.fa'%i, 'w+') for i in range(0,5)]
     current_file = 0
     for num_reads, record in enumerate(SeqIO.parse(open(fastq), 'fastq')):
-        subset_files[current_file].write(''.join(['>',record.id, '\n', str(record.seq), '\n']))
+        subset_files[current_file].write(''.join(['>',record.id, '\\n', str(record.seq), '\\n']))
         if num_reads > num_to_terminate and current_file < 4:
             current_file += 1
             num_to_terminate += twentypercent_split

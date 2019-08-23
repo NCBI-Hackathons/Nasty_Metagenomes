@@ -4,8 +4,9 @@ from Bio import SeqIO
 
 current_dir = os.getcwd()
 os.chdir('hmm_results_temp')
-file_list = [x for x in os.listdir() if x.startswith('hmmresult')]
+file_list = "${hmmresult}".split()
 hit_list = []
+
 #Loop through all files in the temporary hmm_results_temp directory.
 #Parse each file, looking to see whether it contains any results listed
 #under the '------' line. If so, add the accession number stored early
@@ -16,7 +17,7 @@ for inp_file in file_list:
     for line in file_handle:
         if 'Accession:' in line:
             accession_id = line.strip().split()[1]
-        if collect_outputs == True:
+        if collect_outputs:
             if len(line) > 1:
                 if '[No hits detected that satisfy' in line or 'Domain annotation' in line:
                     break
