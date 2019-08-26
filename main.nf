@@ -255,6 +255,7 @@ if (params.mode == "magicblast") {
     }
 
     IN_hmmerDB = Channel.fromPath(params.hmmdb)
+    IN_nf_to_seq = Channel.fromPath(params.hmm_fasta)
     IN_threshold = Channel.value(params.hmmr_threshold)
 
     process hmmer {
@@ -265,6 +266,7 @@ if (params.mode == "magicblast") {
     set sample_id, file(translated_reads) from OUT_translator
     file hmmerdb from IN_hmmerDB.collect()
     val hmmr_threshold from IN_threshold
+    file nf_to_seq from IN_nf_to_seq
 
     output:
     set sample_id, file("hmmresult*") into OUT_hmmer

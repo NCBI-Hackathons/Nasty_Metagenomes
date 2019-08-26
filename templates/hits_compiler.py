@@ -1,9 +1,10 @@
+#!/usr/bin/env python3
+
 import Bio, os
 from Bio import SeqIO
 
 
 current_dir = os.getcwd()
-os.chdir('hmm_results_temp')
 file_list = "${hmmresult}".split()
 hit_list = []
 
@@ -38,7 +39,7 @@ hit_set = set(hit_list)
 os.chdir(current_dir)
 hit_nucleotide_seqs = []
 with open('hit_nucleotide_seqs.fa', 'w+') as hit_file:
-    with open('nf_to_seq.fa') as nf_map_file:
+    with open("${nf_to_seq}") as nf_map_file:
         for record in SeqIO.parse(nf_map_file, 'fasta'):
             if record.id.split('|')[0] in hit_set:
                 hit_nucleotide_seqs.append(record)
