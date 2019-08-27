@@ -185,13 +185,15 @@ if (params.mode == "magicblast") {
 
     IN_reference = Channel.fromPath("${params.reference}")
 
+    IN_reference.into{ IN_reference_1 ; IN_reference_2 }
+
     process mash_sketch {
 
     tag {amr_reference}
     storeDir 'mash_sketch/'
 
     input:
-    file(amr_reference) from IN_reference
+    file(amr_reference) from IN_reference_1
 
     output:
     file("*.msh") into OUT_mash_sketch
@@ -220,6 +222,22 @@ if (params.mode == "magicblast") {
     cut -f 5 ${sample_id}.amr.screen
     """
     }
+
+    process mash_hits_compiler {
+
+    tag {sample_id}
+
+    input:
+    set sample_id, file(mash_results) from OUT_mash_screen
+    file(amr_reference) from IN_reference_2
+
+    output:
+    set sample_id, file("*.fasta") into OUT_baits
+
+    script:
+    template "mash_hits_compiler.py"
+    }
+
 
 
 } else if (params.mode == "hmmer") {
