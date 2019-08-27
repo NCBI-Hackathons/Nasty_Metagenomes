@@ -31,7 +31,6 @@ __process__ = "mash_hits_compiler-nf"
 
 import os
 from itertools import groupby
-import csv
 
 
 if __file__.endswith(".command.sh"):
