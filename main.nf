@@ -266,7 +266,6 @@ if (params.mode == "magicblast") {
     set sample_id, file(translated_reads) from OUT_translator
     file hmmerdb from IN_hmmerDB.collect()
     val hmmr_threshold from IN_threshold
-    file nf_to_seq from IN_nf_to_seq
 
     output:
     set sample_id, file("hmmresult*") into OUT_hmmer
@@ -291,6 +290,7 @@ if (params.mode == "magicblast") {
 
     input:
     set sample_id, file(hmmresult) from OUT_hmmer
+    file nf_to_seq from IN_nf_to_seq
 
     output:
     set sample_id, file("hit_nucleotide_seqs.fa") into OUT_baits
